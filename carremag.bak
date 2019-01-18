@@ -1,0 +1,95 @@
+program CarreMagique;
+//BUT: Construit un carré magique de dimension impaire
+//ENTREE: Rien
+//SORTIE: Carré magique
+uses crt;
+
+CONST TAILLE= 5;
+VAR carre : array[1..TAILLE,1..TAILLE] of integer;
+	i,j,k:integer;
+
+Begin
+  clrscr;
+	for i:=1 to TAILLE do
+		for j:=1 to TAILLE do
+			carre[i,j]:= 0;
+	i:= (TAILLE DIV 2);
+	j:= (TAILLE DIV 2)+1;
+	carre[i,j]:= 1;
+	for K:=1 to ((TAILLE*TAILLE)-1) do
+    begin
+      if ((i = 1)AND(j = TAILLE)) then
+        begin
+          i:= TAILLE;
+          j:= 1;
+        end
+        else
+          begin
+            if (i=1) then
+              begin
+                i:= TAILLE;
+                j:= j+1;
+              end
+              else
+                begin
+                  if (j=TAILLE) then
+                    begin
+                      i:= i-1;
+                      j:= 1
+                    end
+                    else
+                      begin
+                        i:= i-1;
+                        j:= j+1;
+                      end;
+                end;
+          end;
+		if (carre[i,j] = 0) then
+			carre[i,j]:= k+1
+		else
+      begin
+        while (carre[i,j] <> 0) do
+          begin
+            if ((i = 1)AND(j = 1)) then
+              begin
+                if ((i=1)AND(j=1)) then
+                  begin
+                    i:= TAILLE;
+                    j:= j+1;
+                  end
+                  else
+                    begin
+                      if (i = 1) then
+                        begin
+                          i:= TAILLE;
+                          j:= j+1;
+                        end
+                        else
+                          begin
+                            if (j = 1) then
+                              begin
+                                j:= TAILLE;
+                                i:= i-1;
+                              end
+                              else
+                                begin
+                                  i:= i-1;
+                                  j:= j-1;
+                                end;
+                          end;
+                    end;
+              end;
+          end;
+        carre[i,j]:= k+1;
+      end;
+	   end;
+	for i:= 1 to TAILLE do
+    begin
+      for j:= 1 to TAILLE do
+        begin
+        write(carre[i,j]);
+        end;
+      writeln();
+    end;
+    readln;
+END.

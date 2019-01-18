@@ -1,0 +1,3 @@
+#Fichier de configuration des fichiers à ignorer
+*.exe
+*.o
