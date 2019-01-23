@@ -7,6 +7,41 @@ CONST TAILLE <- 5 : ENTIER
 VAR carre : Tableau[1..TAILLE,1..TAILLE] de ENTIER
 	i,j,k:ENTIER
 
+Procedure affiche(carre : Tableau[1..TAILLE,1..TAILLE] de ENTIER)
+//BUT: Affiche le tableau
+//ENTREE: Carré magique
+//SORTIE: Rien
+VAR i,j:ENTIER
+DEBUT
+	POUR i DE 1 A TAILLE FAIRE
+		POUR j DE 1 A TAILLE FAIRE
+			ECRIRE carre[i,j]
+		FINPOUR
+		ECRIRE //Saut de ligne
+	FINPOUR
+FIN
+
+Procedure deplace(i,j,jmax : ENTIER)
+//BUT: Positionne sur la bonne cellule i,j
+//ENTREE: i et j
+//SORTIE: Rien
+VAR jdeplace : ENTIER
+DEBUT
+	SI (jmax = TAILLE) ALORS
+		jdeplace <- 1
+	SINON
+		jdeplace <- -1
+	FINSI
+	i <- i-1
+	j <- j+jdeplace
+	SI (j = jmax+jdeplace) ALORS
+		j <- TAILLE - jmax + jdeplace
+	FINSI
+	SI (i = 0 ) ALORS
+		i <- TAILLE
+	FINSI
+FIN
+
 DEBUT
 	POUR i DE 1 A TAILLE FAIRE
 		POUR j DE 1 A TAILLE FAIRE
@@ -17,33 +52,17 @@ DEBUT
 	j <- (TAILLE DIV 2)+1
 	carre[i,j] <- 1
 	POUR K DE 1 A (TAILLE*TAILLE)-1 FAIRE
-		i <- i-1
-		j <- j+1
-		SI (j = TAILLE+1) ALORS
-			j <- 1
-		FINSI
-		SI (i = 0 ) ALORS
-			i <- TAILLE
-		FINSI
+		deplace(i,j,TAILLE)
 		SI (carre[i,j] <> 0) ALORS
 			carre[i,j] <- k+1
 		SINON
 			TANTQUE (carre[i,j] <> 0) FAIRE
-				i<-i-1
-				j<-j-1
-				SI (j = 0) ALORS
-					j <- TAILLE
-				FINSI
+				deplace(i,j,1)
 			FINTANTQUE
 			carre[i,j] <- k+1
 		FINSI
 	FINPOUR
-	POUR i DE 1 A TAILLE FAIRE
-		POUR j DE 1 A TAILLE FAIRE
-			ECRIRE carre[i,j]
-		FINPOUR
-		ECRIRE //Saut de ligne
-	FINPOUR
+	affiche(carre)
 FIN}
 program CarreMagique;
 //BUT: Construit un carré magique de dimension impaire
@@ -52,8 +71,46 @@ program CarreMagique;
 uses crt;
 
 CONST TAILLE= 5;
-VAR carre : array[1..TAILLE,1..TAILLE] of integer;
+Type IntegerArray = array[1..TAILLE,1..TAILLE] of integer;
+VAR carre : IntegerArray;
 	i,j,k:integer;
+
+procedure affiche(var carre : IntegerArray);
+//BUT: Affiche le tableau
+//ENTREE: Carré magique
+//SORTIE: Rien
+VAR i,j:integer;
+begin
+	for i:= 1 to TAILLE do
+		begin
+			for j:= 1 to TAILLE do
+				begin
+					if (carre[i,j] < 10) then
+						write(carre[i,j],'  ')
+					else
+						write(carre[i,j],' ');
+				end;
+			writeln();
+		end;
+end;
+
+procedure deplace(var i,j: Integer;jmax:integer);
+//BUT: Positionne sur la bonne cellule i,j
+//ENTREE: i et j
+//SORTIE: Rien
+VAR jdeplace:integer;
+begin
+	if (jmax = TAILLE) then
+		jdeplace:=1
+	else
+		jdeplace:=-1;
+	i:=i-1;
+	j:=j+jdeplace;
+	if (j = jmax+jdeplace) then
+		j:= TAILLE - jmax + jdeplace;
+	if (i = 0) then
+		i:= TAILLE;
+end;
 
 Begin
   clrscr;
@@ -65,38 +122,18 @@ Begin
 	carre[i,j]:= 1;
 	for K:=1 to ((TAILLE*TAILLE)-1) do
     begin
-      i:= i-1;
-			j:= j+1;
-			if (j = TAILLE+1) then
-				j:= 1;
-			if (i = 0) then
-				i:= TAILLE;
+			deplace(i,j,TAILLE);
 		if (carre[i,j] = 0) then
 			carre[i,j]:= k+1
 		else
       begin
         while (carre[i,j] <> 0) do
           begin
-              i:= i-1;
-							j:= j-1;
-							if (j = 0) then
-								j:= TAILLE;
-							if (i = 0) then
-								i:= TAILLE;
+              deplace(i,j,1);
           end;
         carre[i,j]:= k+1;
       end;
 	   end;
-		 for i:= 1 to TAILLE do
-			 begin
-				 for j:= 1 to TAILLE do
-					 begin
-						 if (carre[i,j] < 10) then
-					 	 	 write(carre[i,j],'  ')
-						 else
-							 write(carre[i,j],' ');
-					 end;
-				 writeln();
-			 end;
-			 readln;
+		affiche(carre);
+		readln;
 END.
