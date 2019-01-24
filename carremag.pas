@@ -107,7 +107,7 @@ begin
 	i:=i-1;
 	j:=j+jdeplace;
 	if (j = jmax+jdeplace) then
-		j:= TAILLE - jmax + jdeplace;
+		j:= TAILLE - jmax + abs(jdeplace);
 	if (i = 0) then
 		i:= TAILLE;
 end;
