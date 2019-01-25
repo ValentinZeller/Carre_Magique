@@ -4,8 +4,20 @@
 //SORTIE: Carré magique
 
 CONST TAILLE <- 5 : ENTIER
-VAR carre : Tableau[1..TAILLE,1..TAILLE] de ENTIER
-	i,j,k:ENTIER
+
+Procedure initialisation(carre : Tableau[1..TAILLE,1..TAILLE] de ENTIER)
+//BUT: Initialise le carré magique
+//ENTREE: Le tableau
+//SORTIE: Rien
+VAR i,j:ENTIER;
+DEBUT
+	POUR i DE 1 A TAILLE FAIRE
+		POUR j DE 1 A TAILLE FAIRE
+			carre[i,j] <-  0;
+		FINPOUR
+	FINPOUR
+FIN
+
 
 Procedure affiche(carre : Tableau[1..TAILLE,1..TAILLE] de ENTIER)
 //BUT: Affiche le tableau
@@ -42,15 +54,12 @@ DEBUT
 	FINSI
 FIN
 
+procedure magique (var i,j:integer;var carre:IntegerArray);
+//BUT: Remplir le tableau de nombres
+//ENTREE: i et j pour se positionner, carre le tableau
+//SORTIE: Rien
+VAR k:ENTIER
 DEBUT
-	POUR i DE 1 A TAILLE FAIRE
-		POUR j DE 1 A TAILLE FAIRE
-			carre[i,j] <- 0
-		FINPOUR
-	FINPOUR
-	i <- (TAILLE DIV 2)
-	j <- (TAILLE DIV 2)+1
-	carre[i,j] <- 1
 	POUR K DE 1 A (TAILLE*TAILLE)-1 FAIRE
 		deplace(i,j,TAILLE)
 		SI (carre[i,j] <> 0) ALORS
@@ -62,6 +71,17 @@ DEBUT
 			carre[i,j] <- k+1
 		FINSI
 	FINPOUR
+FIN
+
+VAR carre : Tableau[1..TAILLE,1..TAILLE] de ENTIER
+	i,j,k:ENTIER
+
+DEBUT
+	initialisation(carre)
+	i <- (TAILLE DIV 2)
+	j <- (TAILLE DIV 2)+1
+	carre[i,j] <- 1
+	magique(i,j,carre)
 	affiche(carre)
 FIN}
 program CarreMagique;
@@ -70,12 +90,21 @@ program CarreMagique;
 //SORTIE: Carré magique
 uses crt;
 
-CONST TAILLE= 5;
+CONST TAILLE= 7;
 Type IntegerArray = array[1..TAILLE,1..TAILLE] of integer;
-VAR carre : IntegerArray;
-	i,j,k:integer;
 
-procedure affiche(var carre : IntegerArray);
+procedure initialisation (var carre:IntegerArray);
+//BUT: Initialise le carré magique
+//ENTREE: Le tableau
+//SORTIE: Rien
+VAR i,j:integer;
+begin
+	for i:=1 to TAILLE do
+		for j:=1 to TAILLE do
+			carre[i,j]:= 0;
+end;
+
+procedure affiche(var carre:IntegerArray);
 //BUT: Affiche le tableau
 //ENTREE: Carré magique
 //SORTIE: Rien
@@ -94,7 +123,7 @@ begin
 		end;
 end;
 
-procedure deplace(var i,j: Integer;jmax:integer);
+procedure deplace(var i,j : integer;jmax:integer);
 //BUT: Positionne sur la bonne cellule i,j
 //ENTREE: i et j
 //SORTIE: Rien
@@ -112,14 +141,12 @@ begin
 		i:= TAILLE;
 end;
 
-Begin
-  clrscr;
-	for i:=1 to TAILLE do
-		for j:=1 to TAILLE do
-			carre[i,j]:= 0;
-	i:= (TAILLE DIV 2);
-	j:= (TAILLE DIV 2)+1;
-	carre[i,j]:= 1;
+procedure magique (var i,j:integer;var carre:IntegerArray);
+//BUT: Remplir le tableau de nombres
+//ENTREE: i et j pour se positionner, carre le tableau
+//SORTIE: Rien
+VAR k:integer;
+begin
 	for K:=1 to ((TAILLE*TAILLE)-1) do
     begin
 			deplace(i,j,TAILLE);
@@ -134,6 +161,18 @@ Begin
         carre[i,j]:= k+1;
       end;
 	   end;
-		affiche(carre);
-		readln;
+end;
+
+VAR carre : IntegerArray;
+	i,j:integer;
+
+Begin
+  clrscr;
+	initialisation(carre);
+	i:= (TAILLE DIV 2);
+	j:= (TAILLE DIV 2)+1;
+	carre[i,j]:= 1;
+	magique(i,j,carre);
+	affiche(carre);
+	readln;
 END.

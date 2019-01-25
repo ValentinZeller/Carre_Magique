@@ -75,7 +75,7 @@ Type IntegerArray = array[1..TAILLE,1..TAILLE] of integer;
 VAR carre : IntegerArray;
 	i,j,k:integer;
 
-procedure affiche(var carre : IntegerArray);
+procedure affiche;
 //BUT: Affiche le tableau
 //ENTREE: Carré magique
 //SORTIE: Rien
@@ -94,7 +94,7 @@ begin
 		end;
 end;
 
-procedure deplace(var i,j: Integer;jmax:integer);
+procedure deplace(jmax:integer);
 //BUT: Positionne sur la bonne cellule i,j
 //ENTREE: i et j
 //SORTIE: Rien
@@ -107,7 +107,7 @@ begin
 	i:=i-1;
 	j:=j+jdeplace;
 	if (j = jmax+jdeplace) then
-		j:= TAILLE - jmax + jdeplace;
+		j:= TAILLE - jmax + abs(jdeplace);
 	if (i = 0) then
 		i:= TAILLE;
 end;
@@ -122,19 +122,18 @@ Begin
 	carre[i,j]:= 1;
 	for K:=1 to ((TAILLE*TAILLE)-1) do
     begin
-			affiche(carre);
-			deplace(i,j,TAILLE);
+			deplace(TAILLE);
 		if (carre[i,j] = 0) then
 			carre[i,j]:= k+1
 		else
       begin
         while (carre[i,j] <> 0) do
           begin
-              deplace(i,j,1);
+              deplace(1);
           end;
         carre[i,j]:= k+1;
       end;
 	   end;
-		affiche(carre);
+		affiche;
 		readln;
 END.
